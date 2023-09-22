@@ -34,6 +34,14 @@
             cursor: pointer;
         }
 
+        svg:hover {
+            transform: scale(1.2);
+        }
+
+        svg:active {
+            transform: scale(1.3);
+        }
+
         .container {
             display: flex;
             justify-content: center;
@@ -56,7 +64,7 @@
 <body>
     <div class="container">
 
-        <h1>Convert to Upper Case</h1>
+        <h1>Convert to Sentence Case</h1>
 
         <input id="type_field" type="text" placeholder="texto...">
     </div>
@@ -77,8 +85,15 @@
 
             document.querySelector('svg').style.display = 'inline-block'
 
-            let output = document.querySelector('#output')
-            output.textContent = textField.value.toUpperCase();
+            const outputRaw = document.querySelector('#output')
+            const textCapitalize = textField.value.charAt(0).toUpperCase()
+            const textNormalize = textField.value.toLowerCase();
+            
+            const removedTextFirstLetter = textNormalize.slice(1)
+            const outputText = textCapitalize + removedTextFirstLetter
+
+
+            output.textContent = outputText
 
             document.querySelector('svg').addEventListener('click', () => {
                 navigator.clipboard.writeText(output.textContent)
