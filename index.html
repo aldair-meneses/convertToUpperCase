@@ -1,120 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Convert to UpperCase</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-        }
+      body {
+        font-family: "Open Sans", sans-serif;
+      }
 
-        input {
-            padding: 10px;
-            border-radius: 4px;
-            box-shadow: 5px 5px 5px 5px #f5f5f5;
-            font-size: 16px;
-            width: 90%;
-            max-width: 350px;
-        }
+      input {
+        padding: 10px;
+        border-radius: 4px;
+        box-shadow: 5px 5px 5px 5px #f5f5f5;
+        font-size: 16px;
+        width: 90%;
+        max-width: 350px;
+      }
 
-        p {
-            text-align: center;
-            display: inline-block;
-            word-break: break-all;
-        }
+      p {
+        text-align: center;
+        display: inline-block;
+        word-break: break-all;
+      }
 
-        svg {
-            font-size: 24px;
-            margin-left: 20px;
-            margin-right: 20px;
-            cursor: pointer;
-        }
+      svg {
+        font-size: 24px;
+        margin-left: 20px;
+        margin-right: 20px;
+        cursor: pointer;
+      }
 
-        svg:hover {
-            transform: scale(1.2);
-        }
+      svg:hover {
+        transform: scale(1.2);
+      }
 
-        svg:active {
-            transform: scale(1.3);
-        }
+      svg:active {
+        transform: scale(1.3);
+      }
 
-        .container {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            margin-top: auto;
-            height: 100vh;
-            gap: 2rem;
-            margin-bottom: auto;
-        }      
-        
-        .output_area {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+      .container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-top: auto;
+        height: 100vh;
+        gap: 2rem;
+        margin-bottom: auto;
+      }
+
+      .output_area {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
+      <h1>Split Text By Semicolon</h1>
 
-        <h1>Convert to Sentence Case</h1>
-
-        <input id="type_field" type="text" placeholder="texto...">
+      <input id="type_field" type="text" placeholder="texto..." />
     </div>
     <script>
-        const textField = document.querySelector('#type_field')
-        const copyButton = document.createElement('svg')
+      const textField = document.querySelector("#type_field");
+      const copyButton = document.createElement("svg");
 
-        textField.addEventListener('input', () => {
-            if (! document.getElementById('output') ) { 
-                createOutputArea()
-            }
-            
-            if (textField.value === '') {
-                document.querySelector('#output').textContent = ''
-                document.querySelector('svg').style.display = 'none'
-                return;
-            }
+      textField.addEventListener("input", () => {
+        
+        if (!document.getElementById("output")) {
+          createOutputArea();
+        }
 
-            document.querySelector('svg').style.display = 'inline-block'
+        if (textField.value === "") {
+          document.querySelector("#output").textContent = "";
+          document.querySelector("svg").style.display = "none";
+          return;
+        }
 
-            const outputRaw = document.querySelector('#output')
-            const textCapitalize = textField.value.charAt(0).toUpperCase()
-            const textNormalize = textField.value.toLowerCase();
-            
-            const removedTextFirstLetter = textNormalize.slice(1)
-            const outputText = textCapitalize + removedTextFirstLetter
+        document.querySelector("svg").style.display = "inline-block";
+        
+        const outputRaw = document.querySelector("#output");
+        const textCapitalize = textField.value.toUpperCase();
+        console.log(textCapitalize);
+        function splitTextAfter8Numbers(text) {
+          const regex = /(\d{8})(.*?)(?=\d{8}|$)/g;
+          const chunks = [];
+          let match;
 
+          while ((match = regex.exec(text)) !== null) {
+            const chunk = match[1] + " - " + match[2].trim();
+            chunks.push(chunk);
+          }
 
-            output.textContent = outputText
+          return chunks;
+        }
 
-            document.querySelector('svg').addEventListener('click', () => {
-                navigator.clipboard.writeText(output.textContent)
-            })
+        function formatSplittedText(text) {
+          return text.replace(" - ", ";") + ";";
+        };
 
-        })
+        const textSplittedByEightNumbers = splitTextAfter8Numbers(textCapitalize);
+        const formattedText = textSplittedByEightNumbers.map( (text) => formatSplittedText(text));
 
-        copyButton.addEventListener('click', ()=> {
-            navigator.clipboard.writeText
-        })
+        output.innerHTML = formattedText.join("<br>");
 
-        function createOutputArea(){
-                const outputArea = document.createElement('div')
-                outputArea.setAttribute('class', 'output_area')
-                const outputText = document.createElement('p')
+        document.querySelector("svg").addEventListener("click", () => {
+          navigator.clipboard.writeText(output.textContent);
+        });
+      });
 
-                outputText.setAttribute('id', 'output')
-                outputArea.append(outputText)
-                textField.insertAdjacentElement('afterend', outputArea)  
-                outputText.insertAdjacentHTML('afterend', '<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/></svg>')
-            }
+      copyButton.addEventListener("click", () => {
+        navigator.clipboard.writeText;
+      });
+
+      function createOutputArea() {
+        const outputArea = document.createElement("div");
+        outputArea.setAttribute("class", "output_area");
+        const outputText = document.createElement("p");
+
+        outputText.setAttribute("id", "output");
+        outputArea.append(outputText);
+        textField.insertAdjacentElement("afterend", outputArea);
+        outputText.insertAdjacentHTML(
+          "afterend",
+          '<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/></svg>'
+        );
+      }
     </script>
-</body>
+  </body>
 </html>
