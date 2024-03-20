@@ -92,8 +92,8 @@
         const outputRaw = document.querySelector("#output");
         const textCapitalize = textField.value.toUpperCase();
         console.log(textCapitalize);
-        function splitTextAfter8Numbers(text) {
-          const regex = /(\d{8})(.*?)(?=\d{8}|$)/g;
+        function splitTextAfterTenNumbers(text) {
+          const regex = /(\d{10})(.*?)(?=\d{10}|$)/g;
           const chunks = [];
           let match;
 
@@ -109,7 +109,7 @@
           return text.replace(" - ", ";") + ";\n";
         };
 
-        const textSplittedByEightNumbers = splitTextAfter8Numbers(textCapitalize);
+        const textSplittedByEightNumbers = splitTextAfterTenNumbers(textCapitalize);
         const formattedText = textSplittedByEightNumbers.map( (text) => formatSplittedText(text));
 
         output.innerHTML = formattedText.join("<br>");
